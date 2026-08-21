@@ -1,0 +1,294 @@
+import express from "express";
+import { Region } from "@prisma/client";
+import cors from "cors";
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+type Business = {
+  id: number;
+  name: string;
+  city: string;
+  discount: string;
+};
+
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "Courier Discounts API is running",
+  });
+});
+
+
+app.get("/businesses", async (req, res) => {
+  const businesses = await prisma.business.findMany();
+
+  res.json(businesses);
+});
+
+app.get("/businesses/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  const business = await prisma.business.findUnique({
+    where: {
+      id: id,
+    },
+  });
+
+  if (!business) {
+    return res.status(404).json({
+      message: "Business not found",
+    });
+  }
+
+  res.json(business);
+});
+
+app.post("/businesses", async (req, res) => {
+  const { name, city, discount,region } = req.body;
+
+  const newBusiness = await prisma.business.create({
+    data: {
+      name,
+      city,
+      discount,
+      region,
+    },
+  });
+
+  res.status(201).json(newBusiness);
+});
+
+app.put("/businesses/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  const { name, city, discount, region } = req.body;
+
+  try {
+    const updatedBusiness = await prisma.business.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name,
+        city,
+        discount,
+        region,
+      },
+    });
+
+    res.json(updatedBusiness);
+  } catch {
+    res.status(404).json({
+      message: "Business not found",
+    });
+  }
+});
+
+app.delete("/businesses/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const deletedBusiness = await prisma.business.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    res.json(deletedBusiness);
+  } catch {
+    res.status(404).json({
+      message: "Business not found",
+    });
+  }
+});
+
+app.get("/businesses/region/:region", async (req, res) => {
+  const region = req.params.region.toUpperCase();
+
+  const businesses = await prisma.business.findMany({
+    where: {
+      region: region as Region,
+    },
+  });
+
+  res.json(businesses);
+});
+
+
+app.post("/feedback", async (req, res) => {
+  const { text, userId } = req.body;
+
+  const newFeedback = await prisma.feedback.create({
+    data: {
+      text,
+      user: {
+        connect: {
+          id: Number(userId),
+        },
+      },
+    },
+  });
+
+  res.status(201).json(newFeedback);
+});
+
+app.get("/feedback", async (req, res) => {
+  const feedback = await prisma.feedback.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  res.json(feedback);
+});
+
+app.delete("/feedback/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  try {
+    const deletedFeedback = await prisma.feedback.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    res.json(deletedFeedback);
+  } catch {
+    res.status(404).json({
+      message: "Feedback not found",
+    });
+  }
+});
+
+app.post("/users", async (req, res) => {
+  const { name, email } = req.body;
+
+  const newUser = await prisma.user.create({
+    data: {
+      name,
+      email,
+    },
+  });
+
+  res.status(201).json(newUser);
+});
+
+app.get("/users", async (req, res) => {
+  const users = await prisma.user.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  res.json(users);
+});
+
+app.post("/users/:id/visits", async (req, res) => {
+  const userId = Number(req.params.id);
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  }
+
+  const lastVisit = await prisma.visit.findFirst({
+    where: { userId },
+    orderBy: {
+      visitedAt: "desc",
+    },
+  });
+
+  const now = new Date();
+  const thirtyMinutesMs = 30 * 60 * 1000;
+
+  if (lastVisit) {
+    const differenceMs =
+      now.getTime() - lastVisit.visitedAt.getTime();
+
+    if (differenceMs < thirtyMinutesMs) {
+      return res.json({
+        counted: false,
+        message: "Visit already counted in the last 30 minutes",
+      });
+    }
+  }
+
+  const visit = await prisma.visit.create({
+    data: {
+      userId,
+    },
+  });
+
+  res.status(201).json({
+    counted: true,
+    visit,
+  });
+});
+
+app.get("/stats", async (req, res) => {
+  const now = new Date();
+
+  const startOfToday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(now.getDate() - 7);
+
+  const [
+    totalUsers,
+    totalBusinesses,
+    totalFeedback,
+    totalVisits,
+    visitsToday,
+    visitsLast7Days,
+  ] = await Promise.all([
+    prisma.user.count(),
+    prisma.business.count(),
+    prisma.feedback.count(),
+    prisma.visit.count(),
+
+    prisma.visit.count({
+      where: {
+        visitedAt: {
+          gte: startOfToday,
+        },
+      },
+    }),
+
+    prisma.visit.count({
+      where: {
+        visitedAt: {
+          gte: sevenDaysAgo,
+        },
+      },
+    }),
+  ]);
+
+  res.json({
+    totalUsers,
+    totalBusinesses,
+    totalFeedback,
+    totalVisits,
+    visitsToday,
+    visitsLast7Days,
+  });
+});
+
+app.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+});
