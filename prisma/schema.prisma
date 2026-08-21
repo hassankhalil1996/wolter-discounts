@@ -38,6 +38,14 @@ model User {
   visits Visit[]
 }
 
+model Visit {
+  id        Int      @id @default(autoincrement())
+  visitedAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
 model Feedback {
   id        Int      @id @default(autoincrement())
   text      String
@@ -47,10 +55,7 @@ model Feedback {
   user   User @relation(fields: [userId], references: [id])
 }
 
-model Visit {
+model ServiceHit {
   id        Int      @id @default(autoincrement())
-  visitedAt DateTime @default(now())
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }

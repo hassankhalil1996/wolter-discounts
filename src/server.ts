@@ -289,6 +289,24 @@ app.get("/stats", async (req, res) => {
   });
 });
 
+
+app.post("/hits", async (req, res) => {
+  const hit = await prisma.serviceHit.create({
+    data: {},
+  });
+
+  res.status(201).json(hit);
+});
+
+app.get("/hits/count", async (req, res) => {
+  const totalHits = await prisma.serviceHit.count();
+
+  res.json({
+    totalHits,
+  });
+});
+
+
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });

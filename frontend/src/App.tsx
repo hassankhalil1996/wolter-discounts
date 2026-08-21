@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 import RegionSelector from "./components/RegionSelector";
 import BusinessList from "./components/BusinessList";
 import { getBusinessesByRegion } from "./services/businessService";
 
+import { registerHit } from "./services/hitService";
 import type { Business } from "./types/Business";
 
 function App() {
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    registerHit().catch((error) => {
+      console.error("Failed to register hit:", error);
+    });
+  }, []);
 
   async function selectRegion(region: string) {
     setSelectedRegion(region);
