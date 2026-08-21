@@ -123,20 +123,21 @@ app.get("/businesses/region/:region", async (req, res) => {
 
 
 app.post("/feedback", async (req, res) => {
-  const { text, userId } = req.body;
+  const { comment } = req.body;
 
-  const newFeedback = await prisma.feedback.create({
+  if (!comment || comment.trim() === "") {
+    return res.status(400).json({
+      error: "Comment is required",
+    });
+  }
+
+  const feedback = await prisma.feedback.create({
     data: {
-      text,
-      user: {
-        connect: {
-          id: Number(userId),
-        },
-      },
+      comment: comment.trim(),
     },
   });
 
-  res.status(201).json(newFeedback);
+  res.status(201).json(feedback);
 });
 
 app.get("/feedback", async (req, res) => {
@@ -149,6 +150,8 @@ app.get("/feedback", async (req, res) => {
   res.json(feedback);
 });
 
+
+// to remove
 app.delete("/feedback/:id", async (req, res) => {
   const id = Number(req.params.id);
 

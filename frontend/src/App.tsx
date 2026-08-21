@@ -8,6 +8,8 @@ import { getBusinessesByRegion } from "./services/businessService";
 import { registerHit } from "./services/hitService";
 import type { Business } from "./types/Business";
 
+import FeedbackSection from "./components/FeedbackSection";
+
 function App() {
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [businesses, setBusinesses] = useState<Business[]>([]);
@@ -62,6 +64,7 @@ function App() {
           )}
         </>
       )}
+      <FeedbackSection />
     </div>
   );
 }
