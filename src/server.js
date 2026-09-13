@@ -234,7 +234,10 @@ app.get("/hits/count", async (req, res) => {
         totalHits,
     });
 });
-app.listen(3000, () => {
-    console.log("Server running on http://localhost:3000");
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
 //# sourceMappingURL=server.js.map
