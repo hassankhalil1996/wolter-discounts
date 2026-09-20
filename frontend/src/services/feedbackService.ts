@@ -1,7 +1,9 @@
+const API_URL = import.meta.env.VITE_API_URL;
+
 import type { Feedback } from "../types/Feedback";
 
 export async function getFeedback(): Promise<Feedback[]> {
-  const response = await fetch("http://localhost:3000/feedback");
+  const response = await fetch(`${API_URL}/feedback`);
 
   if (!response.ok) {
     throw new Error("Failed to get feedback");
@@ -11,7 +13,7 @@ export async function getFeedback(): Promise<Feedback[]> {
 }
 
 export async function addFeedback(comment: string): Promise<Feedback> {
-  const response = await fetch("http://localhost:3000/feedback", {
+  const response = await fetch(`${API_URL}/feedback`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

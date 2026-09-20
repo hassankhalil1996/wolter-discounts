@@ -1,5 +1,7 @@
+const API_URL = import.meta.env.VITE_API_URL;
+
 export async function registerHit(): Promise<void> {
-  const response = await fetch("http://localhost:3000/hits", {
+  const response = await fetch(`${API_URL}/hits`, {
     method: "POST",
   });
 
