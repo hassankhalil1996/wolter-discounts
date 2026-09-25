@@ -6,7 +6,7 @@ function AboutPage() {
 
       <div className="about-card">
         <img
-          src="/hassan.jpg"
+          src= "/profile_photo.jpeg"
           alt="Hassan Khalil"
           className="profile-picture"
         />

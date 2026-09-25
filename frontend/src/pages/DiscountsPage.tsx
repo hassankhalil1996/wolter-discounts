@@ -42,28 +42,29 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <h1>Courier Discounts</h1>
+    <div className="app" dir="rtl">
+      <h1>הנחות לשליחי וולט</h1>
 
       {selectedRegion === null ? (
         <RegionSelector onSelectRegion={selectRegion} />
       ) : (
         <>
           <button className="back-button" onClick={goBack}>
-            ← Back
+            חזרה ←
           </button>
 
-          <h2>{selectedRegion} TEL AVIV</h2>
+          <h2>תל אביב - {selectedRegion}</h2>
 
           {loading ? (
-            <p>Loading businesses...</p>
+            <p>טוען עסקים...</p>
           ) : businesses.length === 0 ? (
-            <p>No businesses in this region.</p>
+            <p>אין עסקים באזור זה.</p>
           ) : (
             <BusinessList businesses={businesses} />
           )}
         </>
       )}
+
       <FeedbackSection />
     </div>
   );
