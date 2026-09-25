@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-import RegionSelector from "./components/RegionSelector";
-import BusinessList from "./components/BusinessList";
-import { getBusinessesByRegion } from "./services/businessService";
+import Navbar from "./components/Navbar";
+
+import HomePage from "./pages/HomePage";
+import DiscountsPage from "./pages/DiscountsPage";
+import AboutPage from "./pages/AboutPage";
 
 import { registerHit } from "./services/hitService";
-import type { Business } from "./types/Business";
-
-import FeedbackSection from "./components/FeedbackSection";
 
 function App() {
-  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
-  const [businesses, setBusinesses] = useState<Business[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState("home");
 
   useEffect(() => {
     registerHit().catch((error) => {
@@ -21,51 +18,16 @@ function App() {
     });
   }, []);
 
-  async function selectRegion(region: string) {
-    setSelectedRegion(region);
-    setLoading(true);
-
-    try {
-      const data = await getBusinessesByRegion(region);
-      setBusinesses(data);
-    } catch (error) {
-      console.error(error);
-      setBusinesses([]);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function goBack() {
-    setSelectedRegion(null);
-    setBusinesses([]);
-  }
-
   return (
-    <div className="app">
-      <h1>Courier Discounts</h1>
+    <>
+      <Navbar onNavigate={setPage} />
 
-      {selectedRegion === null ? (
-        <RegionSelector onSelectRegion={selectRegion} />
-      ) : (
-        <>
-          <button className="back-button" onClick={goBack}>
-            ← Back
-          </button>
-
-          <h2>{selectedRegion} TEL AVIV</h2>
-
-          {loading ? (
-            <p>Loading businesses...</p>
-          ) : businesses.length === 0 ? (
-            <p>No businesses in this region.</p>
-          ) : (
-            <BusinessList businesses={businesses} />
-          )}
-        </>
-      )}
-      <FeedbackSection />
-    </div>
+      <div className="app">
+        {page === "home" && <HomePage />}
+        {page === "discounts" && <DiscountsPage />}
+        {page === "about" && <AboutPage />}
+      </div>
+    </>
   );
 }
 
