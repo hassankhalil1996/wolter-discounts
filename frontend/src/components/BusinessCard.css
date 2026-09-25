@@ -1,0 +1,150 @@
+.business-card {
+  width: 100%;
+  padding: 24px;
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.business-card:hover {
+  transform: translateY(-4px);
+
+  border-color: #2563eb;
+
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.12);
+}
+
+
+/* Top */
+
+.business-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-bottom: 22px;
+}
+
+.business-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  border-radius: 14px;
+
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.business-title {
+  flex: 1;
+}
+
+.business-title h3 {
+  margin: 0 0 4px;
+
+  color: #0f172a;
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.business-city {
+  color: #64748b;
+  font-size: 14px;
+}
+
+
+/* Discount */
+
+.business-card-content {
+  padding: 18px;
+
+  background: #f8fafc;
+
+  border-radius: 12px;
+
+  margin-bottom: 18px;
+}
+
+.discount-label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #64748b;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.discount-value {
+  color: #16a34a;
+
+  font-size: 24px;
+  font-weight: 700;
+}
+
+
+/* Bottom */
+
+.business-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+.courier-badge {
+  padding: 6px 10px;
+
+  background: #dbeafe;
+  color: #2563eb;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .business-card {
+    padding: 18px;
+  }
+
+  .business-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .business-title h3 {
+    font-size: 18px;
+  }
+
+  .discount-value {
+    font-size: 21px;
+  }
+}

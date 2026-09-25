@@ -1,0 +1,155 @@
+.region-selector {
+  width: 100%;
+  max-width: 850px;
+  margin: 30px auto 60px;
+}
+
+.region-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.region-label {
+  display: inline-block;
+
+  padding: 7px 14px;
+  margin-bottom: 12px;
+
+  background: #dbeafe;
+  color: #2563eb;
+
+  border-radius: 30px;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.region-header h2 {
+  margin: 0 0 10px;
+
+  font-size: 32px;
+  color: #0f172a;
+}
+
+.region-header p {
+  margin: 0;
+
+  color: #64748b;
+  font-size: 16px;
+}
+
+/* Region grid */
+
+.regions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* Individual region */
+
+.region-card {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 22px;
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+
+  cursor: pointer;
+  text-align: right;
+
+  transition:
+    transform 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.region-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #2563eb;
+
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.1);
+}
+
+/* Small icon */
+
+.region-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  border-radius: 12px;
+
+  font-size: 21px;
+  font-weight: 700;
+}
+
+/* Text */
+
+.region-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  flex: 1;
+}
+
+.region-info strong {
+  color: #0f172a;
+  font-size: 18px;
+}
+
+.region-info small {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Arrow */
+
+.region-arrow {
+  color: #94a3b8;
+  font-size: 20px;
+
+  transition: transform 0.2s;
+}
+
+.region-card:hover .region-arrow {
+  color: #2563eb;
+  transform: translateX(-4px);
+}
+
+/* Mobile */
+
+@media (max-width: 650px) {
+  .region-selector {
+    margin-top: 20px;
+  }
+
+  .regions {
+    grid-template-columns: 1fr;
+  }
+
+  .region-header h2 {
+    font-size: 27px;
+  }
+
+  .region-card {
+    padding: 18px;
+  }
+}
