@@ -1,15 +1,13 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const PORT = process.env.PORT || 3000;
-const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
-const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
-app.use(express_1.default.json());
+const express = require("express");
+const cors = require("cors");
 const client_1 = require("@prisma/client");
+const adminAuth_1 = require("./middleware/adminAuth");
+const app = express();
+app.use(cors());
+app.use(express.json());
 const prisma = new client_1.PrismaClient();
 app.get("/", (req, res) => {
     res.json({
@@ -34,7 +32,7 @@ app.get("/businesses/:id", async (req, res) => {
     }
     res.json(business);
 });
-app.post("/businesses", async (req, res) => {
+app.post("/businesses", adminAuth_1.requireAdmin, async (req, res) => {
     const { name, city, discount, region } = req.body;
     const newBusiness = await prisma.business.create({
         data: {
@@ -46,7 +44,7 @@ app.post("/businesses", async (req, res) => {
     });
     res.status(201).json(newBusiness);
 });
-app.put("/businesses/:id", async (req, res) => {
+app.put("/businesses/:id", adminAuth_1.requireAdmin, async (req, res) => {
     const id = Number(req.params.id);
     const { name, city, discount, region } = req.body;
     try {
@@ -69,7 +67,7 @@ app.put("/businesses/:id", async (req, res) => {
         });
     }
 });
-app.delete("/businesses/:id", async (req, res) => {
+app.delete("/businesses/:id", adminAuth_1.requireAdmin, async (req, res) => {
     const id = Number(req.params.id);
     try {
         const deletedBusiness = await prisma.business.delete({
@@ -117,7 +115,7 @@ app.get("/feedback", async (req, res) => {
     res.json(feedback);
 });
 // to remove
-app.delete("/feedback/:id", async (req, res) => {
+app.delete("/feedback/:id", adminAuth_1.requireAdmin, async (req, res) => {
     const id = Number(req.params.id);
     try {
         const deletedFeedback = await prisma.feedback.delete({
@@ -133,7 +131,7 @@ app.delete("/feedback/:id", async (req, res) => {
         });
     }
 });
-app.post("/users", async (req, res) => {
+app.post("/users", adminAuth_1.requireAdmin, async (req, res) => {
     const { name, email } = req.body;
     const newUser = await prisma.user.create({
         data: {

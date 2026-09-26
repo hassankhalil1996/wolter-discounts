@@ -1,15 +1,17 @@
 const PORT = process.env.PORT || 3000;
 
-import express from "express";
+import express = require("express");
 import { Region } from "@prisma/client";
-import cors from "cors";
+import cors = require("cors");
+import { PrismaClient } from "@prisma/client";
+import { requireAdmin } from "./middleware/adminAuth";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-import { PrismaClient } from "@prisma/client";
+
 
 const prisma = new PrismaClient();
 
@@ -52,7 +54,7 @@ app.get("/businesses/:id", async (req, res) => {
   res.json(business);
 });
 
-app.post("/businesses", async (req, res) => {
+app.post("/businesses", requireAdmin, async (req, res) => {
   const { name, city, discount,region } = req.body;
 
   const newBusiness = await prisma.business.create({
@@ -67,7 +69,7 @@ app.post("/businesses", async (req, res) => {
   res.status(201).json(newBusiness);
 });
 
-app.put("/businesses/:id", async (req, res) => {
+app.put("/businesses/:id", requireAdmin, async (req, res) => {
   const id = Number(req.params.id);
 
   const { name, city, discount, region } = req.body;
@@ -93,7 +95,7 @@ app.put("/businesses/:id", async (req, res) => {
   }
 });
 
-app.delete("/businesses/:id", async (req, res) => {
+app.delete("/businesses/:id", requireAdmin, async (req, res) => {
   const id = Number(req.params.id);
 
   try {
@@ -154,7 +156,7 @@ app.get("/feedback", async (req, res) => {
 
 
 // to remove
-app.delete("/feedback/:id", async (req, res) => {
+app.delete("/feedback/:id",requireAdmin, async (req, res) => {
   const id = Number(req.params.id);
 
   try {
@@ -172,7 +174,7 @@ app.delete("/feedback/:id", async (req, res) => {
   }
 });
 
-app.post("/users", async (req, res) => {
+app.post("/users", requireAdmin, async (req, res) => {
   const { name, email } = req.body;
 
   const newUser = await prisma.user.create({
