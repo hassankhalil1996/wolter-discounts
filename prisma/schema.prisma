@@ -48,9 +48,9 @@ model Visit {
 
 model Feedback {
   id        Int      @id @default(autoincrement())
-  comment      String
+  comment   String
+  isPublic  Boolean  @default(true)
   createdAt DateTime @default(now())
-
 }
 
 model ServiceHit {

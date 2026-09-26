@@ -127,31 +127,66 @@ app.get("/businesses/region/:region", async (req, res) => {
 
 
 app.post("/feedback", async (req, res) => {
-  const { comment } = req.body;
+  try {
+    const { comment, isPublic } = req.body;
 
-  if (!comment || comment.trim() === "") {
-    return res.status(400).json({
-      error: "Comment is required",
+    if (!comment || typeof comment !== "string") {
+      return res.status(400).json({
+        error: "Comment is required",
+      });
+    }
+
+    const feedback = await prisma.feedback.create({
+      data: {
+        comment,
+        isPublic: isPublic !== false,
+      },
+    });
+
+    res.status(201).json(feedback);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Failed to create feedback",
     });
   }
-
-  const feedback = await prisma.feedback.create({
-    data: {
-      comment: comment.trim(),
-    },
-  });
-
-  res.status(201).json(feedback);
 });
 
 app.get("/feedback", async (req, res) => {
-  const feedback = await prisma.feedback.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  try {
+    const feedbacks = await prisma.feedback.findMany({
+      where: {
+        isPublic: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-  res.json(feedback);
+    res.json(feedbacks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Failed to get feedback",
+    });
+  }
+});
+
+app.get("/admin/feedback", requireAdmin, async (req, res) => {
+  try {
+    const feedbacks = await prisma.feedback.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.json(feedbacks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Failed to get feedback",
+    });
+  }
 });
 
 

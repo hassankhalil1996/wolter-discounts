@@ -12,7 +12,10 @@ export async function getFeedback(): Promise<Feedback[]> {
   return response.json();
 }
 
-export async function addFeedback(comment: string): Promise<Feedback> {
+export async function addFeedback(
+  comment: string,
+  isPublic: boolean
+) {
   const response = await fetch(`${API_URL}/feedback`, {
     method: "POST",
     headers: {
@@ -20,6 +23,7 @@ export async function addFeedback(comment: string): Promise<Feedback> {
     },
     body: JSON.stringify({
       comment,
+      isPublic,
     }),
   });
 

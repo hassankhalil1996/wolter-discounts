@@ -9,6 +9,7 @@ import {
 function FeedbackSection() {
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [comment, setComment] = useState("");
+  const [isPublic, setIsPublic] = useState(true);
 
   useEffect(() => {
     async function loadFeedback() {
@@ -29,31 +30,65 @@ function FeedbackSection() {
     }
 
     try {
-      const newFeedback = await addFeedback(comment);
+      const newFeedback = await addFeedback(comment, isPublic);
 
-      setFeedback((currentFeedback) => [
-        newFeedback,
-        ...currentFeedback,
-      ]);
+      // Add it to the visible list only if it is public
+      if (isPublic) {
+        setFeedback((currentFeedback) => [
+          newFeedback,
+          ...currentFeedback,
+        ]);
+      }
 
       setComment("");
+      setIsPublic(true);
     } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <div className="feedback-section">
-      <h2>Feedback</h2>
+    <div className="feedback-section" dir="rtl">
+      <h2>משוב</h2>
+
+      <p>
+        נשמח לשמוע את דעתכם, ההצעות שלכם ורעיונות לשיפור האתר.
+      </p>
 
       <textarea
         value={comment}
         onChange={(event) => setComment(event.target.value)}
-        placeholder="Write your feedback..."
+        placeholder="כתבו כאן את המשוב שלכם..."
       />
 
+      <div className="feedback-visibility">
+        <label>
+          <input
+            type="radio"
+            name="visibility"
+            checked={isPublic}
+            onChange={() => setIsPublic(true)}
+          />
+          משוב ציבורי
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="visibility"
+            checked={!isPublic}
+            onChange={() => setIsPublic(false)}
+          />
+          משוב פרטי
+        </label>
+      </div>
+
+      <p className="feedback-note">
+        משוב ציבורי יוצג באתר. משוב פרטי יהיה גלוי רק למנהל האתר.
+      </p>
+
       <button onClick={handleSubmit}>
-        Add Comment
+        שליחת משוב
       </button>
 
       <div className="feedback-list">
