@@ -8,20 +8,20 @@ function Navbar({ onNavigate }: NavbarProps) {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        Courier Discounts
+        הנחות לשליחי וולט
       </div>
 
       <div className="navbar-links">
         <button onClick={() => onNavigate("home")}>
-          Home
+          בית
         </button>
 
         <button onClick={() => onNavigate("discounts")}>
-          Discounts
+          ההנחות 
         </button>
 
         <button onClick={() => onNavigate("about")}>
-          About Me
+          מי אני
         </button>
       </div>
     </nav>

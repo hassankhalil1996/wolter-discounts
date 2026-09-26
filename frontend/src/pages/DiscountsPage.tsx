@@ -66,6 +66,7 @@ function App() {
       )}
 
       <FeedbackSection />
+      
     </div>
   );
 }
