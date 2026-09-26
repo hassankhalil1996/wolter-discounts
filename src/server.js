@@ -228,6 +228,25 @@ app.post("/hits", async (req, res) => {
     });
     res.status(201).json(hit);
 });
+
+app.get("/hits", async (req, res) => {
+  try {
+    const hits = await prisma.serviceHit.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.json({
+      total: hits.length,
+      hits: hits,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to get hits" });
+  }
+});
+
 app.get("/hits/count", async (req, res) => {
     const totalHits = await prisma.serviceHit.count();
     res.json({
