@@ -311,6 +311,27 @@ app.get("/hits/count", async (req, res) => {
   });
 });
 
+app.get("/hits", async (req, res) => {
+  try {
+    const hits = await prisma.serviceHit.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.json({
+      total: hits.length,
+      hits: hits,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to get hits" });
+  }
+});
+
+app.get("/test", (req, res) => {
+  res.send("NEW SERVER CODE WORKS");
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

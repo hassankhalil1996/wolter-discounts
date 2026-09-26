@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const PORT = process.env.PORT || 3000;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
@@ -233,6 +234,26 @@ app.get("/hits/count", async (req, res) => {
         totalHits,
     });
 });
-app.listen(3000, () => {
-    console.log("Server running on http://localhost:3000");
+app.get("/hits", async (req, res) => {
+    try {
+        const hits = await prisma.serviceHit.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+        res.json({
+            total: hits.length,
+            hits: hits,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to get hits" });
+    }
+});
+app.get("/test", (req, res) => {
+    res.send("NEW SERVER CODE WORKS");
+});
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
