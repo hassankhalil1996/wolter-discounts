@@ -23,6 +23,9 @@ function Navbar({ onNavigate }: NavbarProps) {
         <button onClick={() => onNavigate("about")}>
           מי אני
         </button>
+        <button onClick={() => onNavigate("admin")}>
+          מנהל
+        </button>
       </div>
     </nav>
   );

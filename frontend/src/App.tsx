@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import DiscountsPage from "./pages/DiscountsPage";
 import AboutPage from "./pages/AboutPage";
+import AdminPage from "./pages/AdminPage";
 
 import { registerHit } from "./services/hitService";
 
@@ -26,6 +27,7 @@ function App() {
         {page === "home" && <HomePage />}
         {page === "discounts" && <DiscountsPage />}
         {page === "about" && <AboutPage />}
+        {page === "admin" && <AdminPage />}
       </div>
     </>
   );
