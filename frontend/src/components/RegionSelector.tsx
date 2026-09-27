@@ -16,7 +16,7 @@ function RegionSelector({ onSelectRegion }: Props) {
       <div className="regions">
         <button
           className="region-card"
-          onClick={() => onSelectRegion("צפון")}
+          onClick={() => onSelectRegion("NORTH")}
         >
           <span className="region-icon">↑</span>
 
@@ -30,7 +30,7 @@ function RegionSelector({ onSelectRegion }: Props) {
 
         <button
           className="region-card"
-          onClick={() => onSelectRegion("מרכזז")}
+          onClick={() => onSelectRegion("CENTRAL")}
         >
           <span className="region-icon">●</span>
 
@@ -44,7 +44,7 @@ function RegionSelector({ onSelectRegion }: Props) {
 
         <button
           className="region-card"
-          onClick={() => onSelectRegion("דרום")}
+          onClick={() => onSelectRegion("SOUTH")}
         >
           <span className="region-icon">↓</span>
 
@@ -58,7 +58,7 @@ function RegionSelector({ onSelectRegion }: Props) {
 
         <button
           className="region-card"
-          onClick={() => onSelectRegion("מזרח")}
+          onClick={() => onSelectRegion("EAST")}
         >
           <span className="region-icon">←</span>
 
