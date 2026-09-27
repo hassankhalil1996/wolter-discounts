@@ -93,26 +93,62 @@ app.get("/businesses/region/:region", async (req, res) => {
     res.json(businesses);
 });
 app.post("/feedback", async (req, res) => {
-    const { comment } = req.body;
-    if (!comment || comment.trim() === "") {
-        return res.status(400).json({
-            error: "Comment is required",
+    try {
+        const { comment, isPublic } = req.body;
+        if (!comment || typeof comment !== "string") {
+            return res.status(400).json({
+                error: "Comment is required",
+            });
+        }
+        const feedback = await prisma.feedback.create({
+            data: {
+                comment,
+                isPublic: isPublic !== false,
+            },
+        });
+        res.status(201).json(feedback);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Failed to create feedback",
         });
     }
-    const feedback = await prisma.feedback.create({
-        data: {
-            comment: comment.trim(),
-        },
-    });
-    res.status(201).json(feedback);
 });
 app.get("/feedback", async (req, res) => {
-    const feedback = await prisma.feedback.findMany({
-        orderBy: {
-            createdAt: "desc",
-        },
-    });
-    res.json(feedback);
+    try {
+        const feedbacks = await prisma.feedback.findMany({
+            where: {
+                isPublic: true,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+        res.json(feedbacks);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Failed to get feedback",
+        });
+    }
+});
+app.get("/admin/feedback", adminAuth_1.requireAdmin, async (req, res) => {
+    try {
+        const feedbacks = await prisma.feedback.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+        res.json(feedbacks);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Failed to get feedback",
+        });
+    }
 });
 // to remove
 app.delete("/feedback/:id", adminAuth_1.requireAdmin, async (req, res) => {
@@ -251,6 +287,37 @@ app.get("/hits", async (req, res) => {
 });
 app.get("/test", (req, res) => {
     res.send("NEW SERVER CODE WORKS");
+});
+app.get("/admin/hits/daily", adminAuth_1.requireAdmin, async (req, res) => {
+    try {
+        const hits = await prisma.serviceHit.findMany({
+            select: {
+                createdAt: true,
+            },
+            orderBy: {
+                createdAt: "asc",
+            },
+        });
+        const hitsPerDay = {};
+        for (const hit of hits) {
+            const date = hit.createdAt.toISOString().split("T")[0];
+            hitsPerDay[date] = (hitsPerDay[date] || 0) + 1;
+        }
+        const data = Object.entries(hitsPerDay).map(([date, count]) => ({
+            date,
+            count,
+        }));
+        res.json({
+            total: hits.length,
+            data,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Failed to get hit statistics",
+        });
+    }
 });
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

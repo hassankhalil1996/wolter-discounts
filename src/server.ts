@@ -370,6 +370,45 @@ app.get("/test", (req, res) => {
   res.send("NEW SERVER CODE WORKS");
 });
 
+app.get("/admin/hits/daily", requireAdmin, async (req, res) => {
+  try {
+    const hits = await prisma.serviceHit.findMany({
+      select: {
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+
+    const hitsPerDay: Record<string, number> = {};
+
+    for (const hit of hits) {
+      const date = hit.createdAt.toISOString().split("T")[0];
+
+      hitsPerDay[date] = (hitsPerDay[date] || 0) + 1;
+    }
+
+    const data = Object.entries(hitsPerDay).map(
+      ([date, count]) => ({
+        date,
+        count,
+      })
+    );
+
+    res.json({
+      total: hits.length,
+      data,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      error: "Failed to get hit statistics",
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
