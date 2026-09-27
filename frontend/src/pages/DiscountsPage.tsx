@@ -10,6 +10,13 @@ import type { Business } from "../types/Business";
 
 import FeedbackSection from "../components/FeedbackSection";
 
+const regionNames: Record<string, string> = {
+  NORTH: "צפון",
+  CENTRAL: "מרכז",
+  SOUTH: "דרום",
+  EAST: "מזרח",
+};
+
 function App() {
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [businesses, setBusinesses] = useState<Business[]>([]);
@@ -53,7 +60,7 @@ function App() {
             חזרה ←
           </button>
 
-          <h2>תל אביב - {selectedRegion}</h2>
+          <h2>תל אביב - {regionNames[selectedRegion]}</h2>
 
           {loading ? (
             <p>טוען עסקים...</p>
