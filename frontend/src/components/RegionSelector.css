@@ -142,7 +142,8 @@
   }
 
   .regions {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .region-header h2 {
@@ -150,6 +151,38 @@
   }
 
   .region-card {
-    padding: 18px;
+    min-width: 0;
+    padding: 14px 8px;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 7px;
+    text-align: center;
+  }
+
+  .region-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .region-info {
+    flex: initial;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .region-info strong {
+    font-size: 14px;
+  }
+
+  .region-info small {
+    font-size: 11px;
+  }
+
+  .region-arrow {
+    display: none;
   }
 }

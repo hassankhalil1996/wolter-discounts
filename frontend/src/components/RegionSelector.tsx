@@ -63,7 +63,7 @@ function RegionSelector({ onSelectRegion }: Props) {
           <span className="region-icon">←</span>
 
           <span className="region-info">
-            <strong>מזרח תל אביב</strong>
+            <strong>רמת גן - גבעתיים</strong>
             <small>הצג הטבות באזור</small>
           </span>
 

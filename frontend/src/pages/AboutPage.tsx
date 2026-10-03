@@ -14,7 +14,7 @@ function AboutPage() {
         />
 
         <div className="about-info">
-          <span className="about-label">קצת עליי</span>
+          <span className="about-label">קצת עלי</span>
 
           <h1>היי, אני חסן</h1>
 
