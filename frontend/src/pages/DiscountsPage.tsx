@@ -8,7 +8,7 @@ import { getBusinessesByRegion } from "../services/businessService";
 import { registerHit } from "../services/hitService";
 import type { Business } from "../types/Business";
 
-import FeedbackSection from "../components/FeedbackSection";
+
 
 const regionNames: Record<string, string> = {
   NORTH: "צפון",
@@ -72,7 +72,7 @@ function App() {
         </>
       )}
 
-      <FeedbackSection />
+      
       
     </div>
   );
