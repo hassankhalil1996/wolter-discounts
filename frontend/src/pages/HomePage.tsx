@@ -21,32 +21,16 @@ function HomePage({ onNavigate }: Props) {
           האתר מרכז מסעדות ובתי עסק בתל אביב שמציעים הנחות
           והטבות מיוחדות לקהילת שליחי Wolt ברכישת אוכל ומוצרים.
         </p>
-
-          <section className="discount-cta">
-          <span className="discount-cta-label">הטבות לשליחים</span>
-
-          <h2>ההנחות מחכות לכם</h2>
-
-          <button
+        <button
             className="discount-cta-button"
             onClick={() => onNavigate("discounts")}
           >
             מצאו הנחות
             <span>←</span>
           </button>
-        </section>
 
       </section>
 
-
-
-
-
-
-      <section className="info-section">
-
-
-      </section>
 
     </div>
   );
