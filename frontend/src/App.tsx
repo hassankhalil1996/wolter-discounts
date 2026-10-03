@@ -24,7 +24,7 @@ function App() {
       <Navbar onNavigate={setPage} />
 
       <div className="app">
-        {page === "home" && <HomePage />}
+        {page === "home" && <HomePage onNavigate={setPage} />}
         {page === "discounts" && <DiscountsPage />}
         {page === "about" && <AboutPage />}
         {page === "admin" && <AdminPage />}

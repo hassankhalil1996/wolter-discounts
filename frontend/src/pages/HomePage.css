@@ -157,3 +157,53 @@
     grid-template-columns: 1fr;
   }
 }
+
+.discount-cta {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 40px 25px;
+  text-align: center;
+
+  background: #eff6ff;
+  border-radius: 20px;
+}
+
+.discount-cta-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.discount-cta h2 {
+  margin: 10px 0;
+  font-size: 32px;
+}
+
+.discount-cta p {
+  margin: 0 auto 25px;
+  max-width: 500px;
+  line-height: 1.7;
+}
+
+.discount-cta-button {
+  padding: 14px 28px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #2563eb;
+  color: white;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.discount-cta-button span {
+  margin-right: 8px;
+}
+
+.discount-cta-button:hover {
+  transform: translateY(-2px);
+}

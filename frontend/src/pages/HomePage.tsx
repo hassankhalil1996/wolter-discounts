@@ -1,6 +1,10 @@
 import "./HomePage.css";
 
-function HomePage() {
+type Props = {
+  onNavigate: (page: string) => void;
+};
+
+function HomePage({ onNavigate }: Props) {
   return (
     <div className="home-page" dir="rtl">
 
@@ -18,37 +22,29 @@ function HomePage() {
           והטבות מיוחדות לקהילת שליחי Wolt ברכישת אוכל ומוצרים.
         </p>
 
-        <p className="hero-secondary">
-          בחרו את האזור שבו אתם עובדים וגלו אילו הטבות זמינות
-          בקרבתכם.
-        </p>
+          <section className="discount-cta">
+          <span className="discount-cta-label">הטבות לשליחים</span>
+
+          <h2>ההנחות מחכות לכם</h2>
+
+          <button
+            className="discount-cta-button"
+            onClick={() => onNavigate("discounts")}
+          >
+            מצאו הנחות
+            <span>←</span>
+          </button>
+        </section>
+
       </section>
+
+
+
+
+
 
       <section className="info-section">
 
-        <div className="info-card">
-          <div className="info-icon">%</div>
-          <h3>הנחות מיוחדות</h3>
-          <p>
-            הטבות והנחות המיועדות במיוחד לשליחי Wolt.
-          </p>
-        </div>
-
-        <div className="info-card">
-          <div className="info-icon">⌖</div>
-          <h3>לפי אזור</h3>
-          <p>
-            מצאו בקלות עסקים שמציעים הטבות באזור שבו אתם עובדים.
-          </p>
-        </div>
-
-        <div className="info-card">
-          <div className="info-icon">✓</div>
-          <h3>פשוט ומהיר</h3>
-          <p>
-            בוחרים אזור, מוצאים עסק ונהנים מההטבה.
-          </p>
-        </div>
 
       </section>
 
