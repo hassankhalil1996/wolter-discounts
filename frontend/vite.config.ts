@@ -10,8 +10,8 @@ export default defineConfig({
       registerType: "autoUpdate",
 
       manifest: {
-        name: "Courier Discounts",
-        short_name: "Discounts",
+        name: "Wolters Discounts",
+        short_name: "Wolters",
         description: "Discounts for couriers",
 
         theme_color: "#2563eb",
